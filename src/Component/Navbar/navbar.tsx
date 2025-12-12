@@ -11,7 +11,7 @@ export const Navbar = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      setIsScrolled(window.scrollY > 10);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -26,31 +26,33 @@ export const Navbar = () => {
     <nav
       className={cn(
         'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
-        isScrolled ? 'bg-background/95 backdrop-blur-md shadow-lg' : 'bg-gradient-to-b from-background/80 to-transparent'
+        'pt-safe-top', // iPhone safe area support
+        isScrolled
+          ? 'bg-background/95 backdrop-blur-md shadow-lg'
+          : 'bg-gradient-to-b from-background/80 to-transparent'
       )}
     >
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16 md:h-20">
+        <div className="flex items-center justify-between h-14 sm:h-16 md:h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 group">
-            <span className="text-2xl md:text-3xl font-bold text-primary tracking-tight">
+            <span className="text-xl sm:text-2xl md:text-3xl font-bold text-primary tracking-tight">
               STREAMIFY
             </span>
           </Link>
 
-          {/* Desktop Navigation */}
+          {/* Desktop Nav */}
           <div className="hidden md:flex items-center gap-8">
             <NavLink to="/" icon={<Home size={18} />} label="Home" active={location.pathname === '/'} />
             <NavLink to="/search" icon={<Search size={18} />} label="Search" active={location.pathname === '/search'} />
           </div>
 
-          {/* Mobile Menu Button */}
+          {/* Mobile Menu Toggle */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className="md:hidden p-2 text-foreground hover:text-primary transition-colors"
-            aria-label="Toggle menu"
           >
-            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>
       </div>
@@ -64,9 +66,9 @@ export const Navbar = () => {
             exit={{ opacity: 0, height: 0 }}
             className="md:hidden bg-background/95 backdrop-blur-md border-t border-border"
           >
-            <div className="container mx-auto px-4 py-4 flex flex-col gap-2">
-              <MobileNavLink to="/" icon={<Home size={20} />} label="Home" active={location.pathname === '/'} />
-              <MobileNavLink to="/search" icon={<Search size={20} />} label="Search" active={location.pathname === '/search'} />
+            <div className="container mx-auto px-4 py-3 flex flex-col gap-2">
+              <MobileNavLink to="/" icon={<Home size={18} />} label="Home" active={location.pathname === '/'} />
+              <MobileNavLink to="/search" icon={<Search size={18} />} label="Search" active={location.pathname === '/search'} />
             </div>
           </motion.div>
         )}
@@ -99,7 +101,7 @@ const MobileNavLink = ({ to, icon, label, active }: NavLinkProps) => (
   <Link
     to={to}
     className={cn(
-      'flex items-center gap-3 px-4 py-3 rounded-lg transition-colors',
+      'flex items-center gap-3 px-4 py-2 rounded-lg transition-colors',
       active ? 'bg-primary/10 text-primary' : 'text-foreground hover:bg-muted'
     )}
   >

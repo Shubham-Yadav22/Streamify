@@ -25,7 +25,7 @@ const Hero = () => {
   };
 
   return (
-  <section className="relative h-[60vh] md:h-[70vh] flex items-end overflow-hidden">
+  <section className="relative min-h-[60vh] md:min-h-[70vh] flex items-end overflow-hidden mt-14 sm:mt-16 md:mt-20">
     {/* Background gradient */}
     <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-background to-background" />
     
@@ -43,7 +43,7 @@ const Hero = () => {
       />
     </div>
 
-    <div className="relative container mx-auto px-4 pb-12 md:pb-20">
+    <div className="relative container mx-auto px-4 pb-12 md:pb-20 w-full">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
