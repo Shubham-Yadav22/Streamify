@@ -17,7 +17,14 @@ const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 const hasApiKey = API_KEY && API_KEY.trim() !== '' && API_KEY !== 'demo_key';
 
 // Hero component
-const Hero = () => (
+const Hero = () => {
+  const handleScrollToTrending = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    // Smoothly scroll to trending section; keeps hash as fallback if JS disabled
+    document.getElementById('trending')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  return (
   <section className="relative h-[60vh] md:h-[70vh] flex items-end overflow-hidden">
     {/* Background gradient */}
     <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-background to-background" />
@@ -53,6 +60,7 @@ const Hero = () => (
         <div className="flex flex-wrap gap-4">
           <a
             href="#trending"
+            onClick={handleScrollToTrending}
             className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-colors"
           >
             <Play size={20} />
@@ -69,7 +77,8 @@ const Hero = () => (
       </motion.div>
     </div>
   </section>
-);
+  );
+};
 
 
 
