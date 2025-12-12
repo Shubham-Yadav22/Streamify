@@ -86,8 +86,8 @@ const ShowDetail = () => {
         )}
 
         {/* Content */}
-        <div className="relative pt-24 md:pt-32 pb-8 px-4">
-          <div className="container mx-auto">
+        <div className="relative pt-24 md:pt-32 pb-8 ">
+          <div className="container mx-auto px-4">
             {/* Back button */}
             <Link
               to="/"
@@ -246,10 +246,10 @@ const ShowDetail = () => {
             )}
           </div>
 
-          {/* Episode List - Vertical scroll with snap */}
+          {/* Episode List */}
           <div
             ref={episodeContainerRef}
-            className="space-y-4 md:space-y-3 max-h-[70vh] overflow-y-auto snap-y-mandatory hide-scrollbar rounded-xl"
+            className="space-y-4 md:space-y-3"
           >
             {seasonLoading ? (
               Array.from({ length: 5 }).map((_, i) => (
