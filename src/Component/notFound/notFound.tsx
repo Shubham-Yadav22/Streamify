@@ -7,6 +7,7 @@ import { SEO } from '@/Component/seo/seo';
 const NotFound = () => {
   return (
     <>
+    <Layout>
       <SEO title="Page Not Found" />
       <div className="min-h-screen flex items-center justify-center px-4">
         <motion.div
@@ -46,6 +47,7 @@ const NotFound = () => {
           </div>
         </motion.div>
       </div>
+      </Layout>
       </>
   );
 };
