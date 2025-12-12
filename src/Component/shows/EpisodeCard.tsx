@@ -19,10 +19,10 @@ export const EpisodeCard = ({ episode, index = 0, onPlay }: EpisodeCardProps) =>
   )
   const stillUrl = useObservableValue(stillUrl$, null)
   const overviewText = episode.overview || 'No description available';
-  const isLongOverview = overviewText.length > 140;
+  const isLongOverview = overviewText.length > 200;
   const displayOverview = showFullOverview || !isLongOverview
     ? overviewText
-    : `${overviewText.slice(0, 140).trimEnd()}…`;
+    : `${overviewText.slice(0, 200).trimEnd()}…`;
 
   return (
     <motion.div
@@ -79,7 +79,7 @@ export const EpisodeCard = ({ episode, index = 0, onPlay }: EpisodeCardProps) =>
               <button
                 type="button"
                 onClick={() => setShowFullOverview(true)}
-                className="text-xs text-primary hover:text-primary/80 font-medium underline underline-offset-4"
+                className="text-xs  font-medium "
               >
                 ...
               </button>
