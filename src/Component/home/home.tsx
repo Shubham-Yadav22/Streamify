@@ -71,30 +71,7 @@ const Hero = () => (
   </section>
 );
 
-// API Key Warning Banner
-const ApiKeyWarning = () => (
-  <motion.div
-    initial={{ opacity: 0, y: -20 }}
-    animate={{ opacity: 1, y: 0 }}
-    className="bg-yellow-500/10 border border-yellow-500/30 rounded-xl p-4 md:p-6 mx-4 md:mx-8 mb-6"
-  >
-    <div className="flex items-start gap-3">
-      <AlertCircle className="text-yellow-500 flex-shrink-0 mt-0.5" size={20} />
-      <div>
-        <h3 className="font-semibold text-yellow-500 mb-1">TMDB API Key Required</h3>
-        <p className="text-sm text-muted-foreground mb-3">
-          To see real TV show data, you need to add your TMDB API key.
-        </p>
-        <ol className="text-sm text-muted-foreground space-y-1 list-decimal list-inside">
-          <li>Get a free API key from <a href="https://www.themoviedb.org/settings/api" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">TMDB</a></li>
-          <li>Create a <code className="bg-muted px-1 rounded">.env</code> file in your project root</li>
-          <li>Add: <code className="bg-muted px-1 rounded">VITE_TMDB_API_KEY=your_key_here</code></li>
-          <li>Restart your development server</li>
-        </ol>
-      </div>
-    </div>
-  </motion.div>
-);
+
 
 const Home = () => {
   const { data: trending, isLoading: trendingLoading, error: trendingError } = useTrendingShows();
@@ -112,7 +89,6 @@ const Home = () => {
       <SEO />
       <Hero />
       
-      {!hasApiKey && <ApiKeyWarning />}
       
       <div className="pb-16 space-y-2">
         <section id="trending">
