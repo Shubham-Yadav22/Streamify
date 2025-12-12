@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { Play } from 'lucide-react';
 import { Episode } from '@/types';
 import { getImageUrl$ } from '@/services/tmdb';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useObservableValue } from '@/hooks/useObservableValue';
 import { cn } from '@/lib/utils';
 
@@ -13,10 +13,16 @@ interface EpisodeCardProps {
 }
 
 export const EpisodeCard = ({ episode, index = 0, onPlay }: EpisodeCardProps) => {
+  const [showFullOverview, setShowFullOverview] = useState(false);
   const stillUrl$ = useMemo(() => getImageUrl$(episode.still_path, 'w300'),
     null
   )
   const stillUrl = useObservableValue(stillUrl$, null)
+  const overviewText = episode.overview || 'No description available';
+  const isLongOverview = overviewText.length > 140;
+  const displayOverview = showFullOverview || !isLongOverview
+    ? overviewText
+    : `${overviewText.slice(0, 140).trimEnd()}…`;
 
   return (
     <motion.div
@@ -62,7 +68,23 @@ export const EpisodeCard = ({ episode, index = 0, onPlay }: EpisodeCardProps) =>
             {episode.name}
           </h3>
 
-          <p className="text-muted-foreground text-xs line-clamp-1 md:line-clamp-1 md:pb-10">{episode.overview || 'No description available'}</p>
+          <div className="md:pb-10 space-y-1">
+            <p className={cn(
+              'text-muted-foreground text-xs',
+              showFullOverview ? '' : 'line-clamp-1 md:line-clamp-1'
+            )}>
+              {displayOverview}
+            </p>
+            {isLongOverview && !showFullOverview && (
+              <button
+                type="button"
+                onClick={() => setShowFullOverview(true)}
+                className="text-xs text-primary hover:text-primary/80 font-medium underline underline-offset-4"
+              >
+                ...
+              </button>
+            )}
+          </div>
           {episode.air_date && (
             <span className="text-xs md:text-sm text-muted-foreground">
               {new Date(episode.air_date).toLocaleDateString()}
