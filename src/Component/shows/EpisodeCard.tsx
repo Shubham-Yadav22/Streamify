@@ -4,6 +4,7 @@ import { Episode } from '@/types';
 import { getImageUrl$ } from '@/services/tmdb';
 import { useMemo, useState } from 'react';
 import { useObservableValue } from '@/hooks/useObservableValue';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
 
 interface EpisodeCardProps {
@@ -14,15 +15,17 @@ interface EpisodeCardProps {
 
 export const EpisodeCard = ({ episode, index = 0, onPlay }: EpisodeCardProps) => {
   const [showFullOverview, setShowFullOverview] = useState(false);
+  const isMobile = useIsMobile();
   const stillUrl$ = useMemo(() => getImageUrl$(episode.still_path, 'w300'),
     null
   )
   const stillUrl = useObservableValue(stillUrl$, null)
   const overviewText = episode.overview || 'No description available';
-  const isLongOverview = overviewText.length > 140;
+  const maxLength = isMobile ? 60 : 140;
+  const isLongOverview = overviewText.length > maxLength;
   const displayOverview = showFullOverview || !isLongOverview
     ? overviewText
-    : `${overviewText.slice(0, 140).trimEnd()}…`;
+    : `${overviewText.slice(0, maxLength).trimEnd()}…`;
 
   return (
     <motion.div
