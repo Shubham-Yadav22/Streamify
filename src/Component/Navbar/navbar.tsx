@@ -3,11 +3,13 @@ import { Link, useLocation } from 'react-router-dom';
 import { Search, Home, Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -42,37 +44,43 @@ export const Navbar = () => {
           </Link>
 
           {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-8">
-            <NavLink to="/" icon={<Home size={18} />} label="Home" active={location.pathname === '/'} />
-            <NavLink to="/search" icon={<Search size={18} />} label="Search" active={location.pathname === '/search'} />
-          </div>
+          {!isMobile && (
+            <div className="flex items-center gap-8">
+              <NavLink to="/" icon={<Home size={18} />} label="Home" active={location.pathname === '/'} />
+              <NavLink to="/search" icon={<Search size={18} />} label="Search" active={location.pathname === '/search'} />
+            </div>
+          )}
 
           {/* Mobile Menu Toggle */}
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden p-2 text-foreground hover:text-primary transition-colors"
-          >
-            {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
-          </button>
+          {isMobile && (
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="p-2 text-foreground hover:text-primary transition-colors"
+            >
+              {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+            </button>
+          )}
         </div>
       </div>
 
       {/* Mobile Menu */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-background/95 backdrop-blur-md border-t border-border"
-          >
-            <div className="container mx-auto px-4 py-3 flex flex-col gap-2">
-              <MobileNavLink to="/" icon={<Home size={18} />} label="Home" active={location.pathname === '/'} />
-              <MobileNavLink to="/search" icon={<Search size={18} />} label="Search" active={location.pathname === '/search'} />
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {isMobile && (
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              className="bg-background/95 backdrop-blur-md border-t border-border"
+            >
+              <div className="container mx-auto px-4 py-3 flex flex-col gap-2">
+                <MobileNavLink to="/" icon={<Home size={18} />} label="Home" active={location.pathname === '/'} />
+                <MobileNavLink to="/search" icon={<Search size={18} />} label="Search" active={location.pathname === '/search'} />
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      )}
     </nav>
   );
 };
