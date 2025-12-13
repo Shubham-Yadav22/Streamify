@@ -1,6 +1,6 @@
 // hooks/useSearch.ts
 import { useQuery } from '@tanstack/react-query';
-import { searchShows$ } from '@/services/search.services';
+import { searchShows$ } from '@/services/Search.services';
 import { firstValueFrom } from 'rxjs';
 
 export const useSearchShows = (query: string) =>

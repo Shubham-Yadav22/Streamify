@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Star, Calendar } from 'lucide-react';
 import { TVShow } from '@/types';
-import { getImageUrl$ } from '@/services/tmdb';
+import { getImageUrl$ } from '@/services/Tmdb';
 import { useObservableValue } from '@/hooks/useObservableValue';
 import { cn } from '@/lib/utils';
 import { useMemo } from 'react';

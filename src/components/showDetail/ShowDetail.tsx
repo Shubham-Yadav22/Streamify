@@ -2,12 +2,12 @@ import { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, Star, Calendar, Tv, ChevronDown } from 'lucide-react';
-import { Layout } from '@/Component/layout/layout';
-import { EpisodeCard } from '@/Component/shows/EpisodeCard';
-import { SEO } from '@/Component/seo/seo';
+import { Layout } from '@/components/layout/Layout';
+import { EpisodeCard } from '@/components/shows/EpisodeCard';
+import { SEO } from '@/components/seo/SEO';
 import { EpisodeCardSkeleton, LoadingSkeleton } from '@/ui-components/ui/loading-skeleton';
 import { useShowDetails, useSeasonDetails } from '@/hooks/useEpisodes';
-import { getImageUrl$, getBackdropUrl$ } from '@/services/tmdb';
+import { getImageUrl$, getBackdropUrl$ } from '@/services/Tmdb';
 import { cn } from '@/lib/utils';
 import {useObservableValue} from '@/hooks/useObservableValue'
 

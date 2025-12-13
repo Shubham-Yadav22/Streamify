@@ -4,15 +4,15 @@ import { TooltipProvider } from "@/ui-components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
-import { ErrorBoundary } from "@/Component/common/errorBoundary";
+import { ErrorBoundary } from "@/components/common/ErrorBoundary";
 import { CarouselSkeleton } from "@/ui-components/ui/loading-skeleton";
-import { Layout } from "@/Component/layout/layout";
+import { Layout } from "@/components/layout/Layout";
 
 // Lazy load pages for code splitting
-const Home = lazy(() => import("./Component/home/home"));
-const Search = lazy(() => import("./Component/search/search"));
-const ShowDetail = lazy(() => import("./Component/showDetail/showdetail"));
-const NotFound = lazy(() => import("./Component/notFound/notFound"));
+const Home = lazy(() => import("./components/home/Home"));
+const Search = lazy(() => import("./components/search/Search"));
+const ShowDetail = lazy(() => import("./components/showDetail/ShowDetail"));
+const NotFound = lazy(() => import("./components/notFound/NotFound"));
 
 const queryClient = new QueryClient({
   defaultOptions: {

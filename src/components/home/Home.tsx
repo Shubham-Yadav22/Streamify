@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { Play, Tv } from 'lucide-react';
-import { Carousel } from '@/Component/shows/Carousel';
-import { SEO } from '@/Component/seo/seo';
+import { Carousel } from '@/components/shows/Carousel';
+import { SEO } from '@/components/seo/SEO';
 import {
   useTrendingShows,
   usePopularShows,

@@ -1,5 +1,5 @@
 // services/tmdb/search.service.ts
-import { fetchFromTMDB$ } from '@/services/tmdb';
+import { fetchFromTMDB$ } from '@/services/Tmdb';
 import { TVShow, TMDBResponse } from '@/types';
 
 export const searchShows$ = (query: string, page = 1) =>

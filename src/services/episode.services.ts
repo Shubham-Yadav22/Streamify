@@ -1,5 +1,5 @@
 // services/tmdb/episodes.service.ts
-import { fetchFromTMDB$ } from '@/services/tmdb';
+import { fetchFromTMDB$ } from '@/services/Tmdb';
 import { TVShowDetails, SeasonDetails } from '@/types';
 
 export const getShowDetails$ = (showId: number) =>

@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Search as SearchIcon, X } from 'lucide-react';
-import { ShowCard } from '@/Component/shows/ShowCard';
-import { SEO } from '@/Component/seo/seo';
+import { ShowCard } from '@/components/shows/ShowCard';
+import { SEO } from '@/components/seo/SEO';
 import { ShowCardSkeleton } from '@/ui-components/ui/loading-skeleton';
 import { useDebounce } from '@/hooks/useDebounce';
 import { useSearchShows } from '@/hooks/useSearch';

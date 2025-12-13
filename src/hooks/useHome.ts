@@ -5,7 +5,7 @@ import {
   getPopularShows$,
   getTopRatedShows$,
   getOnTheAirShows$,
-} from '@/services/home.services';
+} from '@/services/Home.services';
 import { firstValueFrom } from 'rxjs';
 
 export const useTrendingShows = () =>

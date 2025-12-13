@@ -1,10 +1,10 @@
 import { motion } from 'framer-motion';
 import { Play } from 'lucide-react';
 import { Episode } from '@/types';
-import { getImageUrl$ } from '@/services/tmdb';
+import { getImageUrl$ } from '@/services/Tmdb';
 import { useMemo, useState } from 'react';
 import { useObservableValue } from '@/hooks/useObservableValue';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile } from '@/hooks/useMobile';
 import { cn } from '@/lib/utils';
 
 interface EpisodeCardProps {

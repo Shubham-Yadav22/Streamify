@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Search, Home, Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile } from '@/hooks/useMobile';
 
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);

@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Home, Search, Tv } from 'lucide-react';
-import { SEO } from '@/Component/seo/seo';
+import { SEO } from '@/components/seo/SEO';
 
 const NotFound = () => {
   return (

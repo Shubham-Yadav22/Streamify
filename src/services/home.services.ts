@@ -1,5 +1,5 @@
 // services/tmdb/home.service.ts
-import { fetchFromTMDB$ } from '@/services/tmdb';
+import { fetchFromTMDB$ } from '@/services/Tmdb';
 import { TVShow, TMDBResponse } from '@/types';
 
 export const getTrendingShows$ = (timeWindow: 'day' | 'week' = 'week') =>

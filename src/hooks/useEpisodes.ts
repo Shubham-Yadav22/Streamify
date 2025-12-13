@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import {
   getShowDetails$,
   getSeasonDetails$,
-} from '@/services/episode.services';
+} from '@/services/Episode.services';
 import { firstValueFrom } from 'rxjs';
 
 export const useShowDetails = (id: number) =>
