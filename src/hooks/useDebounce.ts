@@ -11,7 +11,7 @@ export function useDebounce<T>(value: T, delay: number = 300): T {
     return () => {
       clearTimeout(timer);
     };
-  }, [value, delay]); // Re-run effect when value or delay changes
+  }, [value, delay]); 
 
-  return debouncedValue; // Return the delayed value
+  return debouncedValue
 }

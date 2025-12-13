@@ -7,6 +7,6 @@ export const useSearchShows = (query: string) =>
   useQuery({
     queryKey: ['search', query],
     queryFn: () => firstValueFrom(searchShows$(query)),
-    enabled: query.length >= 2,
+    enabled: query.length >= 1,
     staleTime: 300_000,
   });

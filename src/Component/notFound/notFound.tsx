@@ -1,13 +1,11 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Home, Search, Tv } from 'lucide-react';
-import { Layout } from '@/Component/layout/layout';
 import { SEO } from '@/Component/seo/seo';
 
 const NotFound = () => {
   return (
     <>
-    <Layout>
       <SEO title="Page Not Found" />
       <div className="min-h-screen flex items-center justify-center px-4">
         <motion.div
@@ -47,7 +45,6 @@ const NotFound = () => {
           </div>
         </motion.div>
       </div>
-      </Layout>
       </>
   );
 };

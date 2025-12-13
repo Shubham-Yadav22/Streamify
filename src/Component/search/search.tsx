@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Search as SearchIcon, Filter, X } from 'lucide-react';
-import { Layout } from '@/Component/layout/layout';
-// import { SearchBar } from '@/components/search/SearchBar';
+import { Search as SearchIcon, X } from 'lucide-react';
 import { ShowCard } from '@/Component/shows/ShowCard';
 import { SEO } from '@/Component/seo/seo';
 import { ShowCardSkeleton } from '@/ui-components/ui/loading-skeleton';
@@ -15,7 +13,7 @@ const Search = () => {
   const { data, isLoading, isError } = useSearchShows(debouncedQuery);
 
   const results = data?.results || [];
-  const hasQuery = debouncedQuery.length >= 2;
+  const hasQuery = debouncedQuery.length >= 1;
   const hasResults = results.length > 0;
 
   return (
@@ -79,7 +77,7 @@ const Search = () => {
 
             {isLoading && hasQuery && (
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-6">
-                {Array.from({ length: 12 }).map((_, i) => (
+                {Array.from({ length: 15 }).map((_, i) => (
                   <ShowCardSkeleton key={i} />
                 ))}
               </div>
@@ -89,7 +87,7 @@ const Search = () => {
               <div className="text-center py-20">
                 <p className="text-destructive mb-2">Something went wrong</p>
                 <p className="text-muted-foreground text-sm">
-                  Please try again later or check your API key
+                  Please try again later 
                 </p>
               </div>
             )}

@@ -18,7 +18,8 @@ export const ShowCard = ({ show, index = 0 }: ShowCardProps) => {
     [show.poster_path]
   );
   
-  const posterUrl = useObservableValue(posterUrl$, null);  const year = useMemo(() => show.first_air_date ? new Date(show.first_air_date).getFullYear() : null, [show.first_air_date]);
+  const posterUrl = useObservableValue(posterUrl$, null);  
+  const year = useMemo(() => show.first_air_date ? new Date(show.first_air_date).getFullYear() : null, [show.first_air_date]);
 
   return (
     <motion.div

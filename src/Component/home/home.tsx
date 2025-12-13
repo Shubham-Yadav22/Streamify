@@ -1,10 +1,7 @@
-import { lazy, Suspense } from 'react';
 import { motion } from 'framer-motion';
-import { TrendingUp, Star, Play, Tv, AlertCircle } from 'lucide-react';
-import { Layout } from '@/Component/layout/layout';
+import { Play, Tv } from 'lucide-react';
 import { Carousel } from '@/Component/shows/Carousel';
 import { SEO } from '@/Component/seo/seo';
-// import { CarouselSkeleton } from '@/components/ui/loading-skeleton';
 import {
   useTrendingShows,
   usePopularShows,
@@ -13,8 +10,6 @@ import {
 } from '@/hooks/useHome';
 import { TMDBResponse, TVShow } from '@/types';
 
-const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
-const hasApiKey = API_KEY && API_KEY.trim() !== '' && API_KEY !== 'demo_key';
 
 // Hero component
 const Hero = () => {

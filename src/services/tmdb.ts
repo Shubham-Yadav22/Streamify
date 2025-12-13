@@ -3,20 +3,12 @@ import { from, throwError, Observable } from "rxjs";
 import { catchError, timeout } from "rxjs/operators";
 
 // TMDB API Configuration
-const API_KEY = (import.meta.env.VITE_TMDB_API_KEY || 'demo_key').trim();
 const BEARER_TOKEN = import.meta.env.VITE_TMDB_ACCESS_TOKEN;
 
 
-// TODO:  base url ans image base url will be read from .env file
+// base url ans image base url will be read from .env file
 const BASE_URL = import.meta.env.VITE_TMDB_BASE_URL;
 const IMAGE_BASE_URL = import.meta.env.VITE_TMDB_IMAGE_BASE_URL;
-
-
-// TODO: all the urls as const 
-
-
-// TODO :  need to return observable in place of promise
-
 
 // Image URL helpers
 import { of } from 'rxjs';
@@ -47,9 +39,7 @@ export const getBackdropUrl$ = (
 };
 
 
-// API request helper with timeout and better error handling
-const API_TIMEOUT = 15000;
-
+// API request helper with timeout and better error handler 
 export const fetchFromTMDB$ = <T>(
   endpoint: string,
   params: Record<string, string> = {}
