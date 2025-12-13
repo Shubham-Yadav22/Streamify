@@ -19,10 +19,12 @@ A Netflix-style TV show discovery platform built with React, TypeScript, and Tai
 - **Styling**: Tailwind CSS + Styled Components
 - **Build Tool**: Vite
 - **Routing**: React Router v6
-- **State Management**: React Query + Context API
+- **State Management**: React Query (TanStack Query)
 - **Animations**: Framer Motion
 - **API**: TMDB (The Movie Database)
 - **SEO**: React Helmet Async
+- **UI Components**: shadcn/ui (Radix UI primitives)
+- **Reactive Programming**: RxJS
 
 ## Getting Started
 
@@ -37,7 +39,7 @@ A Netflix-style TV show discovery platform built with React, TypeScript, and Tai
 1. Clone the repository:
 ```bash
 git clone <your-repo-url>
-cd streamify
+cd showcase-stream-main
 ```
 
 2. Install dependencies:
@@ -45,9 +47,9 @@ cd streamify
 npm install
 ```
 
-3. Create `.env` file from template:
+3. Create `.env` file:
 ```bash
-cp .env.example .env
+# Create .env file in root directory
 ```
 
 4. Add your TMDB API key to `.env`:
@@ -70,6 +72,12 @@ npm run build
 
 The output will be in the `dist` folder.
 
+### Preview Production Build
+
+```bash
+npm run preview
+```
+
 ## Deployment (Vercel)
 
 1. Push your code to GitHub
@@ -80,36 +88,109 @@ The output will be in the `dist` folder.
 ## Folder Structure
 
 ```
-src/
-├── components/
-│   ├── common/          # Shared components (ErrorBoundary)
-│   ├── layout/          # Layout components (Navbar, Layout)
-│   ├── search/          # Search components (SearchBar)
-│   ├── seo/             # SEO components (SEO)
-│   ├── shows/           # Show-related components (Carousel, ShowCard, EpisodeCard)
-│   └── ui/              # UI primitives (shadcn/ui + custom)
-├── hooks/               # Custom React hooks
-├── pages/               # Page components
-├── services/            # API service layer
-├── types/               # TypeScript type definitions
-└── lib/                 # Utility functions
+showcase-stream-main/
+├── public/
+│   ├── placeholder.svg
+│   ├── robots.txt
+│   └── streamify_logo.png
+├── src/
+│   ├── components/
+│   │   ├── common/              # Shared components
+│   │   │   ├── ErrorBoundary.tsx
+│   │   │   └── Errorboundary.spec.tsx
+│   │   ├── home/                # Home page component
+│   │   │   ├── Home.tsx
+│   │   │   └── Home.spec.tsx
+│   │   ├── layout/              # Layout components
+│   │   │   └── Layout.tsx
+│   │   ├── navbar/              # Navigation bar
+│   │   │   ├── Navbar.tsx
+│   │   │   └── Navbar.spec.tsx
+│   │   ├── notFound/            # 404 page
+│   │   │   └── NotFound.tsx
+│   │   ├── search/              # Search page
+│   │   │   ├── Search.tsx
+│   │   │   └── Search.spec.tsx
+│   │   ├── seo/                 # SEO components
+│   │   │   ├── SEO.tsx
+│   │   │   └── SEO.spec.tsx
+│   │   ├── showDetail/          # Show detail page
+│   │   │   ├── ShowDetail.tsx
+│   │   │   └── ShowDetail.spec.tsx
+│   │   └── shows/               # Show-related components
+│   │       ├── Carousel.tsx
+│   │       ├── EpisodeCard.tsx
+│   │       └── ShowCard.tsx
+│   ├── hooks/                   # Custom React hooks
+│   │   ├── useDebounce.ts       # Debounce hook for search
+│   │   ├── useEpisodes.ts       # Episodes data hook
+│   │   ├── useHome.ts           # Home page data hook
+│   │   ├── useMobile.ts         # Mobile detection hook
+│   │   ├── useObservableValue.ts # RxJS observable hook
+│   │   └── useSearch.ts         # Search functionality hook
+│   ├── services/                # API service layer
+│   │   ├── Episode.services.ts  # Episode API calls
+│   │   ├── Home.services.ts     # Home page API calls
+│   │   ├── Search.services.ts   # Search API calls
+│   │   └── Tmdb.ts              # TMDB API client & utilities
+│   ├── types/                   # TypeScript type definitions
+│   │   └── index.ts
+│   ├── ui-components/           # UI component library
+│   │   ├── NavLink.tsx          # Custom NavLink component
+│   │   └── ui/                  # shadcn/ui components
+│   ├── lib/                     # Utility functions
+│   │   └── utils.ts             # Common utilities (cn, etc.)
+│   ├── App.tsx                  # Main app component
+│   ├── main.tsx                 # App entry point
+│   ├── index.css                # Global styles
+│   └── vite-env.d.ts            # Vite type definitions
+├── components.json              # shadcn/ui configuration
+├── eslint.config.js             # ESLint configuration
+├── index.html                   # HTML template
+├── package.json                 # Dependencies
+├── postcss.config.js           # PostCSS configuration
+├── tailwind.config.ts          # Tailwind CSS configuration
+├── tsconfig.json               # TypeScript configuration
+├── tsconfig.app.json           # TypeScript app config
+├── tsconfig.node.json          # TypeScript node config
+├── vercel.json                 # Vercel deployment config
+└── vite.config.ts              # Vite configuration
 ```
 
-## Performance Optimizations
+## Key Components
 
-- **Lazy Loading**: Pages are code-split and lazy-loaded
-- **Image Optimization**: Uses TMDB's responsive image URLs
-- **API Caching**: React Query handles caching and deduplication
-- **Debounced Search**: Prevents excessive API calls
-- **Preconnect**: DNS prefetch for TMDB domains
+### Pages
+- **Home** (`components/home/Home.tsx`) - Main landing page with show carousels
+- **Search** (`components/search/Search.tsx`) - Search functionality with live results
+- **ShowDetail** (`components/showDetail/ShowDetail.tsx`) - Individual show details and episodes
+- **NotFound** (`components/notFound/NotFound.tsx`) - 404 error page
 
-## Known Issues / Future Improvements
+### Custom Hooks
+- **useMobile** - Detects mobile devices using window width
+- **useDebounce** - Debounces input values for search
+- **useHome** - Fetches home page data (trending, popular, etc.)
+- **useSearch** - Handles search functionality
+- **useEpisodes** - Fetches episode data for shows
+- **useObservableValue** - Subscribes to RxJS observables
 
-- Add user authentication for favorites/watchlist
-- Implement infinite scroll for search results
-- Add video trailer playback
-- Dark/light theme toggle
+### Services
+- **Tmdb.ts** - Main TMDB API client with image URL utilities
+- **Home.services.ts** - Home page API endpoints
+- **Search.services.ts** - Search API endpoints
+- **Episode.services.ts** - Episode API endpoints
 
+
+## Development
+
+### Linting
+```bash
+npm run lint
+```
+
+### Build for Development
+```bash
+npm run build:dev
+```
 ## License
 
 MIT
@@ -118,3 +199,4 @@ MIT
 
 - TV show data provided by [TMDB](https://www.themoviedb.org/)
 - UI components from [shadcn/ui](https://ui.shadcn.com/)
+- Icons from [Lucide React](https://lucide.dev/)
