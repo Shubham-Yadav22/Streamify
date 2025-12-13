@@ -26,7 +26,7 @@ export const ShowCard = ({ show, index = 0 }: ShowCardProps) => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: index * 0.05 }}
-      className="flex-shrink-0 w-[140px] md:w-[180px] group"
+      className="flex-shrink-0 w-[140px] md:w-[180px] group pb-0"
     >
       <Link to={`/show/${show.id}`} className="block">
         <div className="relative aspect-[2/3] rounded-lg overflow-hidden bg-muted">

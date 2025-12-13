@@ -1,6 +1,7 @@
 import { TVShow, TVShowDetails, TMDBResponse, SeasonDetails } from '@/types';
 import { from, throwError, Observable } from "rxjs";
 import { catchError, timeout } from "rxjs/operators";
+import axios, { AxiosRequestConfig, CancelTokenSource } from 'axios';
 
 // TMDB API Configuration
 const BEARER_TOKEN = import.meta.env.VITE_TMDB_ACCESS_TOKEN;
@@ -48,31 +49,45 @@ export const fetchFromTMDB$ = <T>(
     const searchParams = new URLSearchParams(params);
     const url = `${BASE_URL}${endpoint}?${searchParams}`;
 
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 15000);
+    // Create cancel token source for axios
+    const cancelTokenSource = axios.CancelToken.source();
 
-    fetch(url, {
+    const axiosConfig: AxiosRequestConfig = {
       method: 'GET',
-      signal: controller.signal,
+      url: url,
+      timeout: 15000, // 15 seconds timeout
+      cancelToken: cancelTokenSource.token,
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json;charset=utf-8',
         'Authorization': `Bearer ${BEARER_TOKEN}`,
       },
-    })
-      .then(async res => {
-        clearTimeout(timeoutId);
-        if (!res.ok) throw new Error(`TMDB Error: ${res.status}`);
-        const data = await res.json();
-        subscriber.next(data);
+    };
+
+    axios(axiosConfig)
+      .then(response => {
+        subscriber.next(response.data);
         subscriber.complete();
       })
       .catch(err => {
-        clearTimeout(timeoutId);
-        subscriber.error(err);
+        if (axios.isCancel(err)) {
+          subscriber.error(new Error('Request cancelled'));
+        } else if (err.response) {
+          // Server responded with error status
+          subscriber.error(new Error(`TMDB Error: ${err.response.status} - ${err.response.statusText}`));
+        } else if (err.request) {
+          // Request made but no response received
+          subscriber.error(new Error('TMDB Error: No response received'));
+        } else {
+          // Error setting up request
+          subscriber.error(err);
+        }
       });
 
-    return () => controller.abort();
+    // Cleanup function to cancel request if unsubscribed
+    return () => {
+      cancelTokenSource.cancel('Request cancelled due to unsubscribe');
+    };
   });
 };
 

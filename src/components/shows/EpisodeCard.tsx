@@ -34,7 +34,7 @@ export const EpisodeCard = ({ episode, index = 0, onPlay }: EpisodeCardProps) =>
       transition={{ duration: 0.4, delay: index * 0.1 }}
       className="snap-start w-full flex-shrink-0"
     >
-      <div className="bg-card rounded-lg md:rounded-xl overflow-hidden group hover:ring-2 hover:ring-primary/50 transition-all duration-300 flex">
+      <div className="bg-card rounded-lg md:rounded-xl overflow-hidden group hover:ring-2 hover:ring-primary/50 transition-all duration-300 flex mt-0">
         {/* Episode thumbnail - Left section (40%) */}
         <div className="relative w-[40%] bg-muted aspect-video overflow-hidden flex items-center justify-center flex-shrink-0">
           {stillUrl ? (
@@ -89,7 +89,7 @@ export const EpisodeCard = ({ episode, index = 0, onPlay }: EpisodeCardProps) =>
             )}
           </div>
           {episode.air_date && (
-            <span className="text-xs md:text-sm text-muted-foreground">
+            <span className={showFullOverview === false ? `text-xs md:text-sm text-muted-foreground ` : `text-xs md:text-sm text-muted-foreground pt-2`}>
               {new Date(episode.air_date).toLocaleDateString()}
             </span>
           )}

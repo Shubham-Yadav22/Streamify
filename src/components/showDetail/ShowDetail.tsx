@@ -61,6 +61,8 @@ const ShowDetail = () => {
   
   const availableSeasons =
     show?.seasons?.filter(s => s.season_number > 0) || [];
+  
+  const selectedSeasonData = availableSeasons.find(s => s.season_number === selectedSeason);
 
   return (
     <>
@@ -70,23 +72,27 @@ const ShowDetail = () => {
         image={backdropUrl || undefined}
       />
 
-      {/* Hero Section */}
-      <section className="relative min-h-[50vh] md:min-h-[60vh]">
-        {/* Backdrop */}
+      {/* Hero Section with extended backdrop effect */}
+      <section className="relative">
+        {/* Backdrop - extends beyond section */}
         {backdropUrl && (
-          <div className="absolute inset-0">
-            <img
-              src={backdropUrl}
-              alt=""
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-background/30" />
-            <div className="absolute inset-0 bg-gradient-to-r from-background/90 to-transparent" />
+          <div className="absolute inset-0 overflow-visible">
+            <div className="absolute inset-0 h-[calc(95%+150px)]">
+              <img
+                src={backdropUrl}
+                alt=""
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-background/30" />
+              <div className="absolute inset-0 bg-gradient-to-r from-background/90 to-transparent" />
+              {/* Extended seamless fade that goes beyond the section */}
+              <div className="absolute bottom-0 left-0 right-0 h-[200px] bg-gradient-to-b from-transparent to-background" />
+            </div>
           </div>
         )}
 
         {/* Content */}
-        <div className="relative pt-24 md:pt-32 pb-8 ">
+        <div className="relative pt-24 md:pt-32 pb-8 md:pb-12">
           <div className="container mx-auto px-4">
             {/* Back button */}
             <Link
@@ -194,7 +200,7 @@ const ShowDetail = () => {
       </section>
 
       {/* Episodes Section */}
-      <section className="py-8 md:py-12">
+      <section className="relative pt-6 pb-8 md:pt-8 md:pb-12 bg-background">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold text-foreground">Episodes</h2>
@@ -206,7 +212,14 @@ const ShowDetail = () => {
                   onClick={() => setIsSeasonDropdownOpen(!isSeasonDropdownOpen)}
                   className="flex items-center gap-2 px-4 py-2 bg-secondary rounded-lg hover:bg-secondary/80 transition-colors"
                 >
-                  <span>Season {selectedSeason}</span>
+                  <span>
+                    Season {selectedSeason}
+                    {selectedSeasonData && (
+                      <span className="text-xs text-muted-foreground ml-2">
+                        ({selectedSeasonData.episode_count} eps)
+                      </span>
+                    )}
+                  </span>
                   <ChevronDown size={18} className={cn(
                     'transition-transform',
                     isSeasonDropdownOpen && 'rotate-180'
@@ -229,12 +242,12 @@ const ShowDetail = () => {
                             setIsSeasonDropdownOpen(false);
                           }}
                           className={cn(
-                            'w-full px-4 py-2 text-left hover:bg-muted transition-colors',
+                            'w-full px-4 py-2 text-left hover:bg-muted transition-colors flex items-center justify-between',
                             s.season_number === selectedSeason && 'bg-muted text-primary'
                           )}
                         >
-                          Season {s.season_number}
-                          <span className="text-xs text-muted-foreground ml-2">
+                          <span>Season {s.season_number}</span>
+                          <span className="text-xs text-muted-foreground">
                             ({s.episode_count} eps)
                           </span>
                         </button>
