@@ -52,7 +52,7 @@ npm install
 # Create .env file in root directory
 ```
 
-4. Add your TMDB API key to `.env`:
+4. Add your TMDB ACCESS_TOKEN key to `.env`:
 ```env
 VITE_TMDB_ACCESS_TOKEN=your_token_here
 ```
