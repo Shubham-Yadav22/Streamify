@@ -32,7 +32,7 @@ A Netflix-style TV show discovery platform built with React, TypeScript, and Tai
 
 - Node.js 18+ 
 - npm or yarn
-- TMDB API key (free)
+- TMDB ACCESS_TOKEN
 
 ### Installation
 
@@ -54,10 +54,10 @@ npm install
 
 4. Add your TMDB API key to `.env`:
 ```env
-VITE_TMDB_API_KEY=your_api_key_here
+VITE_TMDB_ACCESS_TOKEN=your_token_here
 ```
 
-Get your free API key at: https://www.themoviedb.org/settings/api
+Get your free Access Token key at: https://www.themoviedb.org/settings/api
 
 5. Start the development server:
 ```bash
@@ -82,7 +82,7 @@ npm run preview
 
 1. Push your code to GitHub
 2. Connect your repo to Vercel
-3. Add environment variable `VITE_TMDB_API_KEY` in Vercel settings
+3. Add environment variable `VITE_TMDB_ACESS_TOKEN` in Vercel settings
 4. Deploy!
 
 ## Folder Structure
