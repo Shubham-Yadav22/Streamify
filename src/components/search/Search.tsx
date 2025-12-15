@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type KeyboardEvent } from 'react';
 import { motion } from 'framer-motion';
 import { Search as SearchIcon, X } from 'lucide-react';
 import { ShowCard } from '@/components/shows/ShowCard';
@@ -9,12 +9,34 @@ import { useSearchShows } from '@/hooks/useSearch';
 
 const Search = () => {
   const [query, setQuery] = useState('');
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [activeIdx, setActiveIdx] = useState(0);
   const debouncedQuery = useDebounce(query, 300);
   const { data, isLoading, isError } = useSearchShows(debouncedQuery);
 
   const results = data?.results || [];
+  const suggestions = results.slice(0, 6);
   const hasQuery = debouncedQuery.length >= 1;
   const hasResults = results.length > 0;
+
+  const handleSelect = (name: string) => {
+    setQuery(name);
+    setShowSuggestions(false);
+  };
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (!suggestions.length) return;
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setActiveIdx((prev) => (prev + 1) % suggestions.length);
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setActiveIdx((prev) => (prev - 1 + suggestions.length) % suggestions.length);
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      handleSelect(suggestions[activeIdx].name);
+    }
+  };
 
   return (
     <>
@@ -48,7 +70,14 @@ const Search = () => {
               <input
                 type="text"
                 value={query}
-                onChange={(e) => setQuery(e.target.value)}
+                onChange={(e) => {
+                  setQuery(e.target.value);
+                  setShowSuggestions(true);
+                  setActiveIdx(0);
+                }}
+                onFocus={() => setShowSuggestions(true)}
+                onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
+                onKeyDown={handleKeyDown}
                 placeholder="Start typing to search..."
                 className="w-full bg-secondary rounded-xl py-4 pl-12 pr-12 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
               />
@@ -59,6 +88,30 @@ const Search = () => {
                 >
                   <X size={18} />
                 </button>
+              )}
+              {showSuggestions && hasQuery && (
+                <div className="absolute left-0 right-0 mt-2 rounded-xl bg-secondary shadow-lg border border-border z-10 overflow-hidden">
+                  {isLoading && (
+                    <div className="px-4 py-3 text-sm text-muted-foreground">Loading…</div>
+                  )}
+                  {!isLoading && isError && (
+                    <div className="px-4 py-3 text-sm text-destructive">Try again</div>
+                  )}
+                  {!isLoading && !isError && suggestions.map((show, i) => (
+                    <button
+                      key={show.id}
+                      className={`w-full text-left px-4 py-3 hover:bg-muted transition ${
+                        i === activeIdx ? 'bg-muted' : ''
+                      }`}
+                      onMouseDown={() => handleSelect(show.name)}
+                    >
+                      {show.name}
+                    </button>
+                  ))}
+                  {!isLoading && !isError && !suggestions.length && (
+                    <div className="px-4 py-3 text-sm text-muted-foreground">No suggestions</div>
+                  )}
+                </div>
               )}
             </div>
           </div>
