@@ -10,7 +10,7 @@ import { Layout } from "@/components/layout/Layout";
 
 // Lazy load pages for code splitting
 const Home = lazy(() => import("./components/home/Home"));
-const Search = lazy(() => import("./components/search/Search"));
+// const Search = lazy(() => import("./components/search/Search"));
 const ShowDetail = lazy(() => import("./components/showDetail/ShowDetail"));
 const NotFound = lazy(() => import("./components/notFound/NotFound"));
 
@@ -44,7 +44,7 @@ const App = () => (
               <Layout>
               <Routes>
                 <Route path="/" element={<Home />} />
-                <Route path="/search" element={<Search />} />
+                {/* <Route path="/search" element={<Search />} /> */}
                 <Route path="/show/:id" element={<ShowDetail />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>

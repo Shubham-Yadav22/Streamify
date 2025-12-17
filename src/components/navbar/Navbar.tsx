@@ -1,15 +1,28 @@
-import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useState, useEffect, useRef } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Search, Home, Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import {User} from 'lucide-react';
 import { useIsMobile } from '@/hooks/useMobile';
+import SearchDropdown from './SearchDropdown';
+import { Input } from '@/ui-components/ui/input';
+import { useDebounce } from '@/hooks/useDebounce';
+import { useSearchShows } from '@/hooks/useSearch';
 
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isSearchDropdownOpen, setIsSearchDropdownOpen] = useState(false);
+  const [query, setQuery] = useState('');
+  const searchDropdownRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
+  const debouncedQuery = useDebounce(query, 300);
+  const { data, isLoading, isError } = useSearchShows(debouncedQuery);
+  const suggestions = data?.results?.slice(0, 6) || [];
+  const hasQuery = debouncedQuery.length >= 1;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,7 +35,35 @@ export const Navbar = () => {
 
   useEffect(() => {
     setIsMobileMenuOpen(false);
+    setIsSearchDropdownOpen(false);
   }, [location]);
+
+  // Close search dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (searchDropdownRef.current && !searchDropdownRef.current.contains(event.target as Node)) {
+        setIsSearchDropdownOpen(false);
+      }
+    };
+
+    if (isSearchDropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => document.removeEventListener('mousedown', handleClickOutside);
+    }
+  }, [isSearchDropdownOpen]);
+
+  const handleSearchTriggerClick = () => {
+    if (isMobile) {
+      navigate('/search');
+    } else {
+      setIsSearchDropdownOpen(true);
+    }
+  };
+
+  const handleSelectShow = (id: number) => {
+    navigate(`/show/${id}`);
+    setIsSearchDropdownOpen(false);
+  };
 
   return (
     <nav
@@ -45,9 +86,41 @@ export const Navbar = () => {
 
           {/* Desktop Nav */}
           {!isMobile && (
-            <div className="flex items-center gap-8">
-              <NavLink to="/" icon={<Home size={18} />} label="Home" active={location.pathname === '/'} />
-              <NavLink to="/search" icon={<Search size={18} />} label="Search" active={location.pathname === '/search'} />
+            <div className="flex items-center gap-8 relative">
+              {/* <NavLink to="/" icon={<Home size={18} />} label="Home" active={location.pathname === '/'} /> */}
+              <div className="relative" ref={searchDropdownRef}>
+                <Input
+                  value={query}
+                  onClick={handleSearchTriggerClick}
+                  onFocus={handleSearchTriggerClick}
+                  onChange={(e) => {
+                    setQuery(e.target.value);
+                    setIsSearchDropdownOpen(true);
+                  }}
+                  placeholder="Search for TV shows..."
+                  className="w-64 bg-muted/60"
+                />
+                <AnimatePresence>
+                  {isSearchDropdownOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.2 }}
+                      className="absolute right-0 top-full mt-2 w-[400px] z-50"
+                    >
+                      <SearchDropdown
+                        suggestions={suggestions}
+                        isLoading={isLoading}
+                        isError={isError}
+                        hasQuery={hasQuery}
+                        onClose={() => setIsSearchDropdownOpen(false)}
+                        onSelect={handleSelectShow}
+                      />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
             </div>
           )}
 

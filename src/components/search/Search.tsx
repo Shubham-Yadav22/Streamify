@@ -6,6 +6,9 @@ import { SEO } from '@/components/seo/SEO';
 import { ShowCardSkeleton } from '@/ui-components/ui/loading-skeleton';
 import { useDebounce } from '@/hooks/useDebounce';
 import { useSearchShows } from '@/hooks/useSearch';
+import SearchSection from '@/components/shows/searchsection';
+import { cn } from '@/lib/utils';
+import { useNavigate } from 'react-router-dom';
 
 const Search = () => {
   const [query, setQuery] = useState('');
@@ -13,14 +16,14 @@ const Search = () => {
   const [activeIdx, setActiveIdx] = useState(0);
   const debouncedQuery = useDebounce(query, 300);
   const { data, isLoading, isError } = useSearchShows(debouncedQuery);
+  const navigate = useNavigate();
 
   const results = data?.results || [];
   const suggestions = results.slice(0, 6);
   const hasQuery = debouncedQuery.length >= 1;
   const hasResults = results.length > 0;
 
-  const handleSelect = (name: string) => {
-    setQuery(name);
+  const handleSelect = () => {
     setShowSuggestions(false);
   };
 
@@ -32,37 +35,15 @@ const Search = () => {
     } else if (e.key === 'ArrowUp') {
       e.preventDefault();
       setActiveIdx((prev) => (prev - 1 + suggestions.length) % suggestions.length);
-    } else if (e.key === 'Enter') {
+    } else if (e.key === 'Enter' && suggestions[activeIdx]) {
       e.preventDefault();
-      handleSelect(suggestions[activeIdx].name);
+      navigate(`/show/${suggestions[activeIdx].id}`);
+      setShowSuggestions(false);
     }
   };
 
   return (
     <>
-      <SEO 
-        title="Search TV Shows" 
-        description="Search for your favorite TV shows. Find detailed information, episodes, and more."
-      />
-
-      <div className="pt-24 md:pt-28 pb-16">
-        <div className="container mx-auto px-4">
-          {/* Header */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-center mb-10"
-          >
-            <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-              Search TV Shows
-            </h1>
-            <p className="text-muted-foreground max-w-md mx-auto">
-              Find your next favorite series from thousands of TV shows
-            </p>
-          </motion.div>
-
-    
-
           {/* Live search input for real-time results */}
           <div className="max-w-2xl mx-auto mb-8">
             <div className="relative">
@@ -98,15 +79,15 @@ const Search = () => {
                     <div className="px-4 py-3 text-sm text-destructive">Try again</div>
                   )}
                   {!isLoading && !isError && suggestions.map((show, i) => (
-                    <button
+                    <div
                       key={show.id}
-                      className={`w-full text-left px-4 py-3 hover:bg-muted transition ${
+                      className={cn(
                         i === activeIdx ? 'bg-muted' : ''
-                      }`}
-                      onMouseDown={() => handleSelect(show.name)}
+                      )}
+                      onMouseDown={handleSelect}
                     >
-                      {show.name}
-                    </button>
+                      <SearchSection show={show} variant="dropdown" />
+                    </div>
                   ))}
                   {!isLoading && !isError && !suggestions.length && (
                     <div className="px-4 py-3 text-sm text-muted-foreground">No suggestions</div>
@@ -128,13 +109,13 @@ const Search = () => {
               </motion.div>
             )}
 
-            {isLoading && hasQuery && (
+            {/* {isLoading && hasQuery && (
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-6">
                 {Array.from({ length: 15 }).map((_, i) => (
                   <ShowCardSkeleton key={i} />
                 ))}
               </div>
-            )}
+            )} */}
 
             {isError && hasQuery && (
               <div className="text-center py-20">
@@ -169,14 +150,13 @@ const Search = () => {
                 </p>
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-6">
                   {results.map((show, index) => (
-                    <ShowCard key={show.id} show={show} index={index} />
+                    <SearchSection key={show.id} show={show} index={index} />
                   ))}
                 </div>
               </motion.div>
             )}
           </div>
-        </div>
-      </div>
+       
     </>
   );
 };
