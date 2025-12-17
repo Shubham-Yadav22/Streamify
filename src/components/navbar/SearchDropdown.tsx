@@ -28,9 +28,10 @@ const SearchDropdown = ({ suggestions, isLoading, isError, hasQuery, onClose, on
                 <div
                   key={show.id}
                   className={cn('hover:bg-muted cursor-pointer')}
-                  onMouseDown={() => {
-                    onSelect(show.id);
+                  onClick={(e) => {
+                    e.preventDefault();
                     onClose();
+                    onSelect(show.id);
                   }}
                 >
                   <SearchSection show={show} variant="dropdown" />

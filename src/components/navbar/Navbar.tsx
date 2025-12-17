@@ -53,16 +53,13 @@ export const Navbar = () => {
   }, [isSearchDropdownOpen]);
 
   const handleSearchTriggerClick = () => {
-    if (isMobile) {
-      navigate('/search');
-    } else {
-      setIsSearchDropdownOpen(true);
-    }
+    setIsSearchDropdownOpen(true);
   };
 
   const handleSelectShow = (id: number) => {
-    navigate(`/show/${id}`);
     setIsSearchDropdownOpen(false);
+    setQuery('');
+    navigate(`/show/${id}`);
   };
 
   return (
@@ -124,6 +121,43 @@ export const Navbar = () => {
             </div>
           )}
 
+          {/* Mobile Search */}
+          {isMobile && (
+            <div className="flex-1 mx-4 relative" ref={searchDropdownRef}>
+              <Input
+                value={query}
+                onClick={handleSearchTriggerClick}
+                onFocus={handleSearchTriggerClick}
+                onChange={(e) => {
+                  setQuery(e.target.value);
+                  setIsSearchDropdownOpen(true);
+                }}
+                placeholder="Search for TV shows..."
+                className="w-full bg-muted/60"
+              />
+              <AnimatePresence>
+                {isSearchDropdownOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute left-0 right-0 top-full mt-2 z-50"
+                  >
+                    <SearchDropdown
+                      suggestions={suggestions}
+                      isLoading={isLoading}
+                      isError={isError}
+                      hasQuery={hasQuery}
+                      onClose={() => setIsSearchDropdownOpen(false)}
+                      onSelect={handleSelectShow}
+                    />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          )}
+
           {/* Mobile Menu Toggle */}
           {isMobile && (
             <button
@@ -148,7 +182,6 @@ export const Navbar = () => {
             >
               <div className="container mx-auto px-4 py-3 flex flex-col gap-2">
                 <MobileNavLink to="/" icon={<Home size={18} />} label="Home" active={location.pathname === '/'} />
-                <MobileNavLink to="/search" icon={<Search size={18} />} label="Search" active={location.pathname === '/search'} />
               </div>
             </motion.div>
           )}
